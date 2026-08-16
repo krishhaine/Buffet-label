@@ -437,38 +437,22 @@ export const BuffetCard: React.FC<BuffetCardProps> = ({
     return Math.max(6.5, basePt * globalScale * itemScale);
   };
 
-  // Allergen Position & Nudge Configuration
-  const effectiveAllergenPos = item.allergenPositionOverride || settings.allergenPosition || 'bottom';
-  const effectiveAllergenOffset = item.allergenOffsetOverride ?? settings.allergenVerticalOffset ?? 0;
-  const allergenScale = (settings.allergenScale || 100) / 100;
-
   // Render Allergen Badges
-  const renderAllergenBadges = (customAlignClass?: string) => {
+  const renderAllergenBadges = () => {
     if (!showAllergenBadges || item.tags.length === 0) return null;
 
-    const alignClass = customAlignClass || (
-      effectiveAlign === 'center' || isCurvedShape
-        ? 'justify-center'
-        : effectiveAlign === 'right'
-        ? 'justify-end'
-        : 'justify-start'
-    );
+    const alignClass = effectiveAlign === 'center' || isCurvedShape
+      ? 'justify-center'
+      : effectiveAlign === 'right'
+      ? 'justify-end'
+      : 'justify-start';
 
     const customBadgeTextStyle = badgeTextColor && badgeTextColor !== 'auto'
       ? { color: badgeTextColor }
       : undefined;
 
-    const badgeContainerStyle: React.CSSProperties = {};
-    if (allergenScale !== 1) {
-      badgeContainerStyle.transform = `scale(${allergenScale})`;
-      badgeContainerStyle.transformOrigin = effectiveAlign === 'right' ? 'right center' : effectiveAlign === 'center' || isCurvedShape ? 'center center' : 'left center';
-    }
-
     return (
-      <div
-        style={Object.keys(badgeContainerStyle).length > 0 ? badgeContainerStyle : undefined}
-        className={`flex flex-wrap items-center gap-1 ${alignClass}`}
-      >
+      <div className={`flex flex-wrap items-center gap-1 ${alignClass}`}>
         {item.tags.map((code) => {
           const info = getAllergenInfo(code);
           const displayText = getDietaryDisplayText(info, settings.dietaryNameFormat || 'code');
@@ -590,7 +574,7 @@ export const BuffetCard: React.FC<BuffetCardProps> = ({
             )}
 
             {/* Header: Logo / Station / Language / Accent Flourish */}
-            {(showLogo || showAccentLine || (showStationBadge && item.station) || (showPrice && item.price) || showLanguageBadges || item.cardLanguage || (effectiveAllergenPos === 'top_right' && showAllergenBadges && item.tags.length > 0)) && (
+            {(showLogo || showAccentLine || (showStationBadge && item.station) || (showPrice && item.price) || showLanguageBadges || item.cardLanguage) && (
               <div className="flex flex-col items-center justify-center gap-0.5 w-full mb-0.5">
                 {showLogo && logoUrl && (
                   <img
@@ -618,12 +602,6 @@ export const BuffetCard: React.FC<BuffetCardProps> = ({
                     </span>
                   )}
 
-                  {effectiveAllergenPos === 'top_right' && (
-                    <div className="shrink-0">
-                      {renderAllergenBadges('justify-center')}
-                    </div>
-                  )}
-
                   {showPrice && item.price && (
                     <span
                       style={priceColor && priceColor !== 'auto' ? { color: priceColor } : undefined}
@@ -644,31 +622,23 @@ export const BuffetCard: React.FC<BuffetCardProps> = ({
             )}
 
             {/* Primary Dish / Label Title */}
-            <div className="flex items-center justify-center gap-1.5 flex-wrap w-full">
-              <h3
-                contentEditable={!isPrint}
-                suppressContentEditableWarning={true}
-                style={titleStyle}
-                onBlur={(e) => {
-                  if (onUpdate && e.currentTarget.innerText !== item.name) {
-                    onUpdate({ ...item, name: e.currentTarget.innerText.trim() });
-                  }
-                }}
-                className={`font-bold outline-none select-text text-center ${effectiveAllergenPos === 'inline_title' ? 'inline-block' : 'w-full'} px-1 ${themeConfig.titleColor} ${
-                  titleUppercase ? 'uppercase tracking-wide' : ''
-                } ${!isPrint ? 'hover:bg-amber-50/60 focus:bg-amber-50/80 rounded px-0.5 transition-colors cursor-text' : ''}`}
-              >
-                {showDualLanguage && settings.dualLanguageMode === 'single_dual' && dualLanguageStyle === 'side_by_side' && item.translationName
-                  ? `${item.name} / ${item.translationName}`
-                  : item.name}
-              </h3>
-
-              {effectiveAllergenPos === 'inline_title' && showAllergenBadges && item.tags.length > 0 && (
-                <div className="shrink-0 inline-flex">
-                  {renderAllergenBadges()}
-                </div>
-              )}
-            </div>
+            <h3
+              contentEditable={!isPrint}
+              suppressContentEditableWarning={true}
+              style={titleStyle}
+              onBlur={(e) => {
+                if (onUpdate && e.currentTarget.innerText !== item.name) {
+                  onUpdate({ ...item, name: e.currentTarget.innerText.trim() });
+                }
+              }}
+              className={`font-bold outline-none select-text text-center w-full px-1 ${themeConfig.titleColor} ${
+                titleUppercase ? 'uppercase tracking-wide' : ''
+              } ${!isPrint ? 'hover:bg-amber-50/60 focus:bg-amber-50/80 rounded px-0.5 transition-colors cursor-text' : ''}`}
+            >
+              {showDualLanguage && settings.dualLanguageMode === 'single_dual' && dualLanguageStyle === 'side_by_side' && item.translationName
+                ? `${item.name} / ${item.translationName}`
+                : item.name}
+            </h3>
 
             {/* Dual-Language Subtitle Translation */}
             {showDualLanguage && settings.dualLanguageMode === 'single_dual' && (item.translationName || !isPrint) && dualLanguageStyle === 'sub_title' && (
@@ -686,16 +656,6 @@ export const BuffetCard: React.FC<BuffetCardProps> = ({
                 }`}
               >
                 {item.translationName || (!isPrint ? 'Secondary translation...' : '')}
-              </div>
-            )}
-
-            {/* Dietary & Allergen Badges (Placed Directly Below Title to never get cut off) */}
-            {effectiveAllergenPos === 'below_title' && showAllergenBadges && item.tags.length > 0 && (
-              <div
-                style={effectiveAllergenOffset ? { transform: `translateY(${effectiveAllergenOffset}px)` } : undefined}
-                className="py-0.5 w-full flex items-center justify-center"
-              >
-                {renderAllergenBadges()}
               </div>
             )}
 
@@ -745,12 +705,9 @@ export const BuffetCard: React.FC<BuffetCardProps> = ({
               </p>
             )}
 
-            {/* Dietary & Allergen Badges (Standard Bottom in Centered Cluster) */}
-            {effectiveAllergenPos === 'bottom' && showAllergenBadges && item.tags.length > 0 && (
-              <div
-                style={effectiveAllergenOffset ? { transform: `translateY(${effectiveAllergenOffset}px)` } : undefined}
-                className="pt-1 w-full flex items-center justify-center"
-              >
+            {/* Dietary & Allergen Badges (Centered Cluster) */}
+            {showAllergenBadges && item.tags.length > 0 && (
+              <div className="pt-1 w-full flex items-center justify-center">
                 {renderAllergenBadges()}
               </div>
             )}

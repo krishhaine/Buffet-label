@@ -63,8 +63,6 @@ export type BorderStyle = 'hairline' | 'double' | 'corner' | 'minimal' | 'dashed
 
 export type AllergenKey = string;
 
-export type AllergenPosition = 'bottom' | 'below_title' | 'top_right' | 'inline_title';
-
 export type DualLanguageMode = 
   | 'single_dual'         // Both languages combined on each individual card
   | 'separate_paired'     // Separate card for each language, paired next to each other (Card 1: English, Card 2: Spanish)
@@ -148,8 +146,6 @@ export interface BuffetItem {
   descriptionFontSizeOverride?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'auto';
   descScaleOverride?: number; // per-item description scale percentage (70 to 180)
   verticalOffsetOverride?: number; // per-item vertical nudge in px
-  allergenPositionOverride?: AllergenPosition; // per-item allergen position
-  allergenOffsetOverride?: number; // per-item allergen vertical nudge in px
 }
 
 export type BarType = 'host' | 'cash' | 'subsidized' | 'open';
@@ -229,9 +225,6 @@ export interface DesignSettings {
   showDescription: boolean;
   showStationBadge: boolean;
   showAllergenBadges: boolean;
-  allergenPosition?: AllergenPosition; // 'bottom' | 'below_title' | 'top_right' | 'inline_title'
-  allergenVerticalOffset?: number; // -35 to +35 px (push up / nudge down)
-  allergenScale?: number; // 70 to 140 (percentage)
   badgeDisplayMode: BadgeDisplayMode;
   dietaryNameFormat?: DietaryNameFormat; // 'code' (GF), 'full' (Gluten-Free), 'both' (GF • Gluten-Free), 'code-full-parens' (GF (Gluten-Free))
   borderStyle: BorderStyle;
