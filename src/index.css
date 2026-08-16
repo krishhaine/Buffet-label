@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-serif-lux { font-family: 'Playfair Display', Georgia, serif; }
+  .font-cormorant { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .font-cinzel { font-family: 'Cinzel', Georgia, serif; }
+  .font-bodoni { font-family: 'Bodoni Moda', Georgia, serif; }
+  .font-script { font-family: 'Great Vibes', cursive; }
+  .font-dancing { font-family: 'Dancing Script', cursive; }
+  .font-sans-modern { font-family: 'Inter', system-ui, sans-serif; }
+  .font-montserrat { font-family: 'Montserrat', sans-serif; }
+  .font-oswald { font-family: 'Oswald', sans-serif; }
+  .font-outfit { font-family: 'Outfit', sans-serif; }
+  .font-slab { font-family: 'Roboto Slab', serif; }
+  .font-mono-clean { font-family: 'Space Mono', monospace; }
+
+  /* Semi-circle / Arched Dome Silhouette */
+  .shape-arch-dome {
+    border-top-left-radius: 9999px !important;
+    border-top-right-radius: 9999px !important;
+    border-bottom-left-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+  }
+
+  /* Oval Silhouette */
+  .shape-oval {
+    border-radius: 50% / 50% !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Print Calibration Ruler & Grid Overlays */
+.calibration-grid-bg {
+  background-size: 0.5in 0.5in;
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+}
+
+.calibration-inch-mark {
+  position: absolute;
+  font-family: monospace;
+  font-size: 8px;
+  color: #3b82f6;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Screen Mode Visibility - Offscreen layout for accurate high-DPI PDF & PNG generation */
+@media screen {
+  .print-only-container {
+    position: fixed !important;
+    left: -99999px !important;
+    top: 0 !important;
+    width: 8.5in !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -99999 !important;
+    visibility: visible !important;
+  }
+
+  .print-only-container .page-sheet-unit {
+    width: 8.5in !important;
+    height: 11in !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+  }
+}
+
+/* Print Engine & Physical Precision Calibration */
+@media print {
+  html, body {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    width: 8.5in !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  .no-print,
+  nav,
+  header,
+  aside,
+  button,
+  .modal-backdrop,
+  [role="dialog"] {
+    display: none !important;
+  }
+  
+  .print-only-container {
+    display: block !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: 8.5in !important;
+    opacity: 1 !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    visibility: visible !important;
+    z-index: auto !important;
+  }
+
+  @page {
+    size: 8.5in 11in;
+    margin: 0;
+  }
+
+  .page-sheet-unit {
+    width: 8.5in !important;
+    height: 11in !important;
+    max-height: 11in !important;
+    box-sizing: border-box !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    padding: 0.25in !important;
+  }
+
+  .page-sheet-unit:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .print-card-box {
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    outline: none !important;
+  }
+
+  /* Suppress any blue dotted borders, focus rings, or selection borders on print */
+  .shape-oval {
+    outline: none !important;
+    border-style: none !important;
+  }
+
+  *:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}

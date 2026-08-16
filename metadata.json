@@ -1,0 +1,7 @@
+{
+  "name": "Buffet Label Studio",
+  "description": "Professional label generator and BEO parser for guest buffet cards, boxed lunch catering stickers, kitchen prep tags, and universal adhesive sheets with multi-shape calibration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

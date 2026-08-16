@@ -1,0 +1,19 @@
+{
+  "name": "Buffet Label Studio Pro",
+  "short_name": "BuffetLabels",
+  "description": "Professional BEO Menu Parser & Luxury Food Card Generator for Banquets, Catering & Restaurants",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%23d4af37'><rect width='512' height='512' rx='100' fill='%230f172a'/><text x='256' y='320' font-size='260' text-anchor='middle'>🏷️</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "food", "productivity", "utilities"]
+}
